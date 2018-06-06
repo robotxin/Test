@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xlx.mapper.UserMapper">
+    
+    <resultMap type="User" id="userMap">  
+        <id property="user_id" column="user_id" />  
+        <result property="user_nickname" column="user_nickname" />  
+        <result property="user_account" column="user_account" />  
+    </resultMap>  
+    
+        <resultMap type="User" id="userGroupMap" extends="userMap">  
+        <collection property="role" ofType="Role">  
+            <id property="role_id" column="role_id" />  
+            <result property="role_name" column="role_name" />  
+        </collection>  
+    </resultMap>
+      
+        <resultMap type="User" id="userPermissionMap" extends="userMap">  
+        <collection property="permission" ofType="Permission">  
+            <id property="permission_id" column="permission_id" />  
+            <result property="permission_name" column="permission_name" />  
+        </collection>  
+        <collection property="role" ofType="Role">  
+            <id property="role_id" column="role_id" />  
+            <result property="role_name" column="role_name" />  
+        </collection>  
+    </resultMap>  
+    
+        <!-- 根据user表中的id查询用户和权限信息 group_concat group by user_nickname   -->
+    <select id="FindUserRole" parameterType="long"  
+        resultMap="userGroupMap">  
+        select TBL_User.user_id,user_nickname,user_account,role_name from
+         TBL_User,TBL_Role,TBL_User_role where 
+         TBL_User.user_id = TBL_User_role.user_id and 
+         TBL_Role.role_id = TBL_User_role.role_id ;
+    </select>  
+    <select id="FindAllUserRole" parameterType="long"  
+        resultMap="userPermissionMap">  
+        select TBL_User.user_id,user_nickname,user_account,role_name,permission_name from
+         TBL_User,TBL_Role,TBL_permission,TBL_role_permission,TBL_User_role where
+          TBL_User.user_id = TBL_User_role.user_id and
+           TBL_Role.role_id = TBL_User_role.role_id and
+            TBL_Role.role_id = TBL_role_permission.role_id and
+             TBL_role_permission.permission_id = TBL_permission.permission_id order by TBL_User.user_id;
+    </select>  
+   
+  <!--    <select id="FindUserRole" parameterType="long"  
+        resultMap="userGroupMap">  
+       select user_nickname,user_account,role_name,permission_name from
+        TBL_User,TBL_Role,TBL_permission,TBL_role_permission,TBL_User_role where
+         TBL_User.user_id = TBL_User_role.user_id and
+          TBL_Role.role_id = TBL_User_role.role_id and
+           TBL_Role.role_id = TBL_role_permission.role_id and
+            TBL_role_permission.permission_id = TBL_permission.permission_id ;
+    </select>  
+     -->
+	 <insert id="userinsert" parameterType="User">  
+        insert into tbl_user(user_id,user_account,user_nickname,password) values(#{user_id},#{user_account},#{user_nickname},#{password})  
+    </insert>  
+	
+	<select id="getid" parameterType="int" resultType="User">
+	select * from tbl_user where user_id=#{user_id}
+	</select>
+	<select id="getAccount" parameterType="int" resultType="User">
+	select * from tbl_user where user_id=#{user_id}
+	</select>
+	
+    <update id="userupdate" parameterType="User" >    
+        update tbl_user set user_nickname=#{user_nickname},password=#{password} where user_id=#{user_id}    
+    </update>
+    
+      <delete id="userdelete" parameterType="int">    
+        delete from tbl_user where user_id=#{user_id}    
+    </delete>
+    
+         <select id="Finduser" parameterType="int" resultType="User">    
+       select * from tbl_user    
+    </select>
+       
+
+</mapper>

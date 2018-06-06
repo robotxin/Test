@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xlx.mapper.LoginMapper">
+    
+  <!--    <resultMap type="User" id="userMap">  
+        <id property="user_id" column="user_id" />  
+        <result property="user_account" column="user_account" />  
+    </resultMap>  
+    -->
+        <resultMap type="User" id="userMap">  
+        <id property="user_id" column="user_id" />  
+        <result property="user_nickname" column="user_nickname" />  
+        <result property="user_account" column="user_account" />  
+    </resultMap>  
+    
+        <resultMap type="User" id="userGroupMap" extends="userMap">  
+        <collection property="role" ofType="Role">  
+            <id property="role_id" column="role_id" />  
+            <result property="role_name" column="role_name" />  
+        </collection>  
+    </resultMap>
+      
+        <resultMap type="User" id="userPermissionMap" extends="userMap">  
+        <collection property="permission" ofType="Permission">  
+            <id property="permission_id" column="permission_id" />  
+            <result property="permission_name" column="permission_name" />  
+        </collection>  
+        <collection property="role" ofType="Role">  
+            <id property="role_id" column="role_id" />  
+            <result property="role_name" column="role_name" />  
+        </collection>  
+    </resultMap>  
+    
+      <select id="GetByUserNameAndPassord"  resultType="User">
+		select * from tbl_user where user_account=#{user_account} and password=#{password}
+		</select>
+      <select id="GetId"  resultType="Long">
+		select user_id from tbl_user where user_account=#{user_account} and password=#{password}
+		</select>
+		
+		         <select id="Finduser" parameterType="int" resultType="User">    
+       select * from tbl_user    
+    </select>
+    
+        
+        <!-- 根据user表中的id查询用户和权限信息 group_concat group by user_nickname   -->
+    <select id="FindUserRole" parameterType="String"  
+        resultMap="userGroupMap">  
+        select TBL_User.user_id,user_nickname,user_account,role_name from
+         TBL_User,TBL_Role,TBL_User_role where 
+         TBL_User.user_id = TBL_User_role.user_id and 
+         TBL_Role.role_id = TBL_User_role.role_id and user_account=#{user_account};
+    </select>  
+    
+        <select id="FindAllUserRole" parameterType="String"  
+        resultMap="userPermissionMap">  
+        select TBL_User.user_id,user_nickname,user_account,role_name,permission_name from
+         TBL_User,TBL_Role,TBL_permission,TBL_role_permission,TBL_User_role where
+          TBL_User.user_id = TBL_User_role.user_id and
+           TBL_Role.role_id = TBL_User_role.role_id and
+            TBL_Role.role_id = TBL_role_permission.role_id and
+             TBL_role_permission.permission_id = TBL_permission.permission_id and
+              user_account=#{user_account} order by
+               TBL_User.user_id;
+    </select>  
+    		     <!--     <select id="FindByUserAccount" parameterType="String" resultType="User">    
+       select * from tbl_user where user_account=#{user_account}    
+    </select> -->
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xlx.mapper.RolePermissionMapper">
+		<resultMap type="RolePermission" id="rolePermissionMap">
+		<id property="user_permission_id" column="user_permission_id" />
+		<result property="role_id" column="role_id" />
+		<result property="permission_id" column="permission_id" />
+	</resultMap>
+	
+		 <resultMap type="RolePermission" id="rolePermissionGroupMap" extends="rolePermissionMap">  
+        <collection property="permission" ofType="Permission">  
+            <id property="permission_id" column="permission_id" />  
+            <result property="permission_name" column="permission_name" />  
+        </collection>  
+        <collection property="role" ofType="Role">  
+            <id property="role_id" column="role_id" />  
+            <result property="role_name" column="role_name" />  
+        </collection>  
+    </resultMap> 
+	
+	 <insert id="RolePermissionInsert" parameterType="RolePermission">  
+        insert into tbl_role_permission(role_id,permission_id) values(#{role_id},#{permission_id})  
+    </insert>  
+
+    <update id="RolePermissionUpdate" parameterType="RolePermission">    
+        update tbl_role_permission set permission_id=#{permission_id} where role_id=#{role_id}    
+    </update>
+    
+      <delete id="RolePermissionDelete" parameterType="int">    
+        delete from tbl_role_permission where user_permission_id=#{user_permission_id}
+    </delete>
+    
+         <select id="RolePermissionSelect" parameterType="long" resultMap="rolePermissionGroupMap">
+        select user_permission_id,role_name,TBL_Role.role_id,permission_name,TBL_permission.permission_id from
+         TBL_Role,TBL_permission,TBL_role_permission where
+          TBL_Role.role_id = TBL_role_permission.role_id and
+           TBL_role_permission.permission_id = TBL_permission.permission_id order by
+            user_permission_id;
+    </select>
+       
+
+</mapper>

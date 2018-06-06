@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    <meta charset="utf-8"/>
+  <title>权限表</title>
+</head>
+<body>
+<div>
+ <div class="with:80%">
+    <table class="table table-striped" >
+        <thead>
+        <tr>
+        <th>permission_id&nbsp</th>
+            <th>permission_name</th>
+            <th th:if="${#strings.contains(session.userpermission,'修改权限表')}">Update</th>
+            <th th:if="${#strings.contains(session.userpermission,'修改权限表')}">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="permissionlist : ${permissionlist}">
+        
+            <td th:text="${permissionlist.permission_id}">1</td>
+            <td th:text="${permissionlist.permission_name}">1</td>
+            <td th:if="${#strings.contains(session.userpermission,'修改权限表')}"><a th:href="@{/getPermissionId(permission_id=${permissionlist.permission_id})}">更改权限名</a></td>
+            <td th:if="${#strings.contains(session.userpermission,'修改权限表')}"><a th:href="@{/permissionDelete(permission_id=${permissionlist.permission_id})}">删除该权限</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+    <div class="col-sm-2 control-label" th:if="${#strings.contains(session.userpermission,'修改权限表')}">
+        <a href="/toPermissionAdd" th:href="@{/toPermissionAdd}" class="btn btn-info">新增权限</a>
+    </div>
+            <div class="col-sm-2 control-label">
+        <a href="/testresult" th:href="@{/testresult}" class="btn btn-info">返回导航页</a>
+    </div>
+       <div>
+    <a href="/" th:href="@{/}" class="btn btn-info">退出</a>
+   </div>
+    
+</div>
+</div>
+</div>
+
+</body>
+</html>

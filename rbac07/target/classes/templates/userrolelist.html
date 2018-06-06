@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    <meta charset="utf-8"/>
+  <title>所有用户信息</title>
+</head>
+<body>
+<div>
+ <div class="with:80%">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>id&nbsp</th>
+            <th>Account</th>
+            <th>Nickname</th>
+            <th>role</th>
+            <th>permission</th>
+         <!--     <th>Update</th>-->
+            <th th:if="${#strings.contains(session.userpermission,'修改员工表')}">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="userrolelist : ${userrolelist}">
+        	<td th:text="${userrolelist.user_id}">1</td>
+            <td th:text="${userrolelist.user_account}">1</td>
+            <td th:text="${userrolelist.user_nickname}">1</td>
+            <td th:text="${userrolelist.role}">1</td>
+            <td th:text="${userrolelist.permission}">1</td>
+            <!--  <td th:text="${urlist.role_name}">Otto</td>-->
+          <!--   <td><a th:href="@{/getUserRoleId(user_id=${userrolelist.user_id})}">更改用户角色</a></td>--> 
+            <td th:if="${#strings.contains(session.userpermission,'修改员工表')}"><a th:href="@{/userRoleDelete(user_id=${userrolelist.user_id})}">删除该用户</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+    <div class="col-sm-2 control-label" th:if="${#strings.contains(session.userpermission,'修改员工表')}"
+    >
+        <a href="/toUserRoleAdd" th:href="@{/toUserRoleAdd}" class="btn btn-info">创建新用户</a>
+    </div>
+   <!--  <div class="col-sm-2 control-label">
+        <a href="/Findallrole" th:href="@{/Findallrole}" class="btn btn-info">查看角色信息表</a>
+    </div>
+    <div class="col-sm-2 control-label">
+        <a href="/Findallpermission" th:href="@{/Findallpermission}" class="btn btn-info">查看权限信息表</a>
+    </div> -->
+        <div class="col-sm-2 control-label">
+        <a href="/testresult" th:href="@{/testresult}" class="btn btn-info">返回导航页</a>
+    </div>
+       <div>
+    <a href="/" th:href="@{/}" class="btn btn-info">退出</a>
+   </div>
+    
+</div>
+</div>
+</div>
+</body>
+</html>

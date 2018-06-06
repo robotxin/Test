@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xlx.mapper.PermissionMapper">
+	    <resultMap type="Permission" id="PermissionMap">  
+        <id property="permission_id" column="permission_id" />  
+        <result property="permission_name" column="permission_name" />  
+    </resultMap> 
+    
+         <select id="FindPermission" parameterType="Permission" resultType="Permission">     
+        select * from tbl_permission   
+    </select>
+       	<select id="getPermissionId" parameterType="int" resultType="Permission">
+	select * from tbl_permission where permission_id=#{permission_id}
+	</select>
+		 <update id="permissionUpdate" parameterType="Permission">    
+        update tbl_permission set permission_name=#{permission_name} where permission_id=#{permission_id}    
+    </update>
+    	 <insert id="permissionInsert" parameterType="Permission">  
+        insert into tbl_permission(permission_name) values(#{permission_name})  
+    </insert>  
+          <delete id="permissionDelete" parameterType="int">    
+        delete from tbl_permission where permission_id=#{permission_id}    
+    </delete>
+</mapper>

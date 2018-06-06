@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
+    <meta charset="utf-8"/>
+  <title>用户角色表</title>
+</head>
+<body>
+<div>
+ <div class="with:80%">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+        	 <th>user_role_id</th>
+            <th>user_account&nbsp</th>
+            <th>role_name</th>
+            <th th:if="${#strings.contains(session.userpermission,'修改用户角色表')}">delete</th>
+         
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="aaa : ${aaa}">
+        <td th:text="${aaa.user_role_id}">1</td>
+         <td th:text="${#strings.substringBefore(#strings.substringAfter(aaa.user,'account='),',')}">1</td>
+            <td th:text="${aaa.role}">1</td>
+            <td th:if="${#strings.contains(session.userpermission,'修改用户角色表')}"><a th:href="@{/userRoleDeleteTo(user_role_id=${aaa.user_role_id})}">删除该用户角色</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+    <div class="col-sm-2 control-label" th:if="${#strings.contains(session.userpermission,'修改用户角色表')}">
+        <a href="/toUserRoleAddTo" th:href="@{/toUserRoleAddTo}" class="btn btn-info">添加用户角色关系</a>
+    </div>
+        <div class="col-sm-2 control-label">
+        <a href="/testresult" th:href="@{/testresult}" class="btn btn-info">返回导航页</a>
+    </div>
+       <div>
+    <a href="/" th:href="@{/}" class="btn btn-info">退出</a>
+   </div>
+
+</div>
+</div>
+</div>
+</body>
+</html>

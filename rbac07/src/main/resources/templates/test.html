@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+   <h1>你好</h1>
+     <h3 th:text="'欢迎您：' +${session.account}"></h3>
+     <div class="col-sm-offset-2 col-sm-10">
+                <a href="/testresult" th:href="@{/testresult}" class="btn btn-info">Back</a>
+            </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet"
+	href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<meta charset="UTF-8" />
+<title>导航页</title>
+</head>
+<body>
+	<div>
+		<!--   -->
+		<h3 th:text="'账号：' +${session.account}"></h3>
+		<table class="table">
+
+			<thead>
+				<tr>
+					<!--  <th class="navbar-header" th:text="'您拥有的角色：' "></th>-->
+					<button type="button" class="btn btn-primary"
+						data-toggle="collapse" data-target="#role">您拥有的角色</button>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="role" class="active collapse in"
+					th:each="userrole : ${session.userrole}">
+					<td th:text="${userrole.role}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table">
+			<thead>
+				<tr>
+					<!-- <th class="navbar-header" th:text="'您拥有的权限：' "></th> -->
+					<button type="button" class="btn btn-primary"
+						data-toggle="collapse" data-target="#permission">您拥有的权限</button>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="permission" class="active collapse in"
+					th:each="userpermission : ${session.userpermission}">
+					<td th:text="${userpermission.permission}"></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	
+	<button type="button" class="btn btn-primary" data-toggle="collapse"
+		data-target="#desination" >导航&nbsp</button>
+		
+		
+	<div id="desination" class="collapse in">
+		<div>
+			<a href="/FindAllUserRole" th:href="@{/FindAllUserRole}"
+				th:if="${#strings.contains(session.userrole,'管理员角色')or#strings.contains(session.userrole,'经理角色')or#strings.contains(session.userrole,'职员角色')}">查看所有用户信息</a>
+		</div>
+		<div>
+			<a href="/Findallrole" th:href="@{/Findallrole}"
+				th:if="${#strings.contains(session.userrole,'经理角色')or#strings.contains(session.userrole,'管理员角色')}">查看角色表</a>
+		</div>
+		<div>
+			<a href="/Findallpermission" th:href="@{/Findallpermission}"
+				th:if="${#strings.contains(session.userrole,'经理角色')or#strings.contains(session.userrole,'管理员角色')}">查看权限表</a>
+		</div>
+		<div>
+			<a href="/Find" th:href="@{/Find}"
+				th:if="${#strings.contains(session.userrole,'管理员角色')or#strings.contains(session.userrole,'经理角色')}">查看用户角色表</a>
+		</div>
+		<a href="/FindRolePermission" th:href="@{/FindRolePermission}"
+			th:if="${#strings.contains(session.userrole,'管理员角色')or#strings.contains(session.userrole,'经理角色')}">查看角色权限表</a>
+		<div>
+			<a th:href="@{/getid(user_id=${session.id})}"
+				th:if="${#strings.contains(session.userrole,'共有角色')}">更改昵称密码</a>
+		</div>
+	</div>
+	<br>
+	<div>
+		<a href="/" th:href="@{/}" class="btn btn-info">退出</a>
+	</div>
+</body>
+</html>

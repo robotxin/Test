@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xlx.mapper.UserRoleMapper">
+	<resultMap type="UserRole" id="userRoleMap">
+		<id property="user_role_id" column="user_role_id" />
+		<result property="user_id" column="user_id" />
+		<result property="role_id" column="role_id" />
+	</resultMap>
+
+	<!-- <resultMap type="User" id="userMap">
+		<collection property="user" ofType="User">
+			<id property="user_id" column="user_id" />
+			<result property="user_nickname" column="user_nickname" />
+			<result property="user_account" column="user_account" />
+		</collection>
+	</resultMap>
+	 -->
+	 <resultMap type="UserRole" id="userRoleGroupMap" extends="userRoleMap">  
+        <collection property="user" ofType="User">  
+            <id property="user_id" column="user_id" />  
+            <result property="user_account" column="user_account" />  
+        </collection>  
+        <collection property="role" ofType="Role">  
+            <id property="role_id" column="role_id" />  
+            <result property="role_name" column="role_name" />  
+        </collection>  
+    </resultMap> 
+	
+	<insert id="UserRoleInsert" parameterType="UserRole">
+		insert into tbl_user_role(user_id,role_id) values(#{user_id},#{role_id})
+	</insert>
+
+	<update id="UserRoleUpdate" parameterType="UserRole">
+		update tbl_user_role set role_id=#{role_id} where user_id=#{user_id}
+	</update>
+
+	<delete id="UserRoleDelete" parameterType="int">
+		delete from tbl_user_role where user_id = #{user_id}
+	</delete>
+
+	
+	<delete id="UserRoleDeleteTo" parameterType="int">
+		delete from tbl_user_role where user_role_id = #{user_role_id}
+	</delete>
+
+	<select id="UserRoleSelect" parameterType="long" resultMap="userRoleGroupMap">
+		select user_role_id,user_account,TBL_Role.role_id,role_name,TBL_User.user_id from
+		 TBL_User,TBL_Role,TBL_User_role where
+		  TBL_User.user_id = TBL_User_role.user_id and
+		   TBL_Role.role_id = TBL_User_role.role_id;
+	</select>
+	<select id="getUserRoleId" parameterType="int" resultType="UserRole">
+		select * from tbl_user where user_id=#{user_id}
+		<!-- select tbl_user_role.user_id,tbl_user_role.role_id from tbl_user_role,tbl_user where tbl_user_role.user_id=#{tbl_user.user_id} -->
+	</select>
+
+</mapper>

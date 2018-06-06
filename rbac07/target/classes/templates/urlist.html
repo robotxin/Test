@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+  <title>Home</title>
+</head>
+<body>
+<div>
+ <div class="with:80%">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>id&nbsp</th>
+            <th>Account</th>
+            <th>Nickname</th>
+            <th>role</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="urlist : ${urlist}">
+        	<td th:text="${urlist.user_id}">1</td>
+            <td th:text="${urlist.user_account}">1</td>
+            <td th:text="${urlist.user_nickname}">1</td>
+            <td th:text="${urlist.role}">1</td>
+            <!--  <td th:text="${urlist.role_name}">Otto</td>-->
+            <td><a th:href="@{/getid(user_id=${urlist.user_id})}">update</a></td>
+            <td><a th:href="@{/userdelete(user_id=${urlist.user_id})}">delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+    <div class="col-sm-2 control-label">
+        <a href="/toAdd" th:href="@{/toAdd}" class="btn btn-info">add</a>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
+<meta charset="UTF-8" />
+<title>欢迎界面</title>
+</head>
+<body>
+   <h1>你好</h1>
+    <div>
+    <!--   -->
+        <h3 th:text="'欢迎您：' +${session.account}"></h3>
+        
+        <table class="table">
+        
+          <thead>
+    <tr>
+      <th class="navbar-header" th:text="'您拥有的角色：' "></th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr class="active" th:each="userrole : ${session.userrole}">
+        	<td th:text="${userrole.role}"></td>
+        </tr>
+  </tbody>
+        </table>
+         <table class="table">
+          <thead>
+    <tr>
+      <th class="navbar-header" th:text="'您拥有的权限：' "></th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr class="active" th:each="userpermission : ${session.userpermission}">
+        	<td th:text="${userpermission.permission}"></td>
+        </tr>
+  </tbody>
+        </table>
+    </div>
+
+                 <div>
+                <a href="/testresult" th:href="@{/testresult}" class="btn btn-info">去主页面</a>
+            </div>
+            <br>
+                 <div>
+                <a href="/" th:href="@{/}" class="btn btn-info">退出</a>
+            </div>
+</body>
+</html>

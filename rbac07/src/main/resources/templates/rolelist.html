@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
+    <meta charset="utf-8"/>
+  <title>角色表</title>
+</head>
+<body>
+<!--  -->
+<script>
+function deleterole(role_id){
+	var r=confirm("是否删除该角色!");
+	if (r==true){
+		//alert(document.getElementById("tr1").rowIndex);
+		//alert(document.getElementById("tr2").rowIndex);
+		 //var rowIdx = $(this).parent()[0].rowIndex + 1;
+	        //alert("第 " + rowIdx + " 行");
+		//var  role_id = document.getElementsByTagName("user_id");
+		alert(role_id);
+		//window.location.href='/roleDelete';
+	}
+	else{
+		window.location.href='/Findallrole';
+	}
+}
+</script>
+
+<div>
+ <div class="with:80%">
+    <table class="table table-striped">
+        <thead>
+        <tr id="tr1">
+        <th>role_id&nbsp</th>
+            <th>role_name</th>
+          
+            <th th:if="${#strings.contains(session.userpermission,'修改角色表')}">Update</th>
+            <th th:if="${#strings.contains(session.userpermission,'修改角色表')}">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="rolelist : ${rolelist}" id="tr2">
+        
+            <td th:text="${rolelist.role_id}">1</td>
+            <td th:text="${rolelist.role_name}">1</td>
+            <td th:if="${#strings.contains(session.userpermission,'修改角色表')}"><a th:href="@{/getRoleId(role_id=${rolelist.role_id})}">更改角色名</a></td>
+           <!-- <td th:if="${#strings.contains(session.userpermission,'修改角色表')}"><a th:href="@{/roleDelete(role_id=${rolelist.role_id})}">删除该角色</a></td>--> 
+        	<td th:if="${#strings.contains(session.userpermission,'修改角色表')}"><a onclick="deleterole('${rolelist.role_id}')" >删除该角色</td> 
+        </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+    <div class="col-sm-2 control-label" th:if="${#strings.contains(session.userpermission,'修改角色表')}">
+        <a href="/toRoleAdd" th:href="@{/toRoleAdd}" class="btn btn-info">添加角色</a>
+    </div>
+            <div class="col-sm-2 control-label">
+        <a href="/testresult" th:href="@{/testresult}" class="btn btn-info">返回导航页</a>
+    </div>
+       <div>
+    <a href="/" th:href="@{/}" class="btn btn-info">退出</a>
+   </div>
+    
+</div>
+</div>
+</div>
+</body>
+</html>
